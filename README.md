@@ -12,7 +12,5 @@ URLProxy 是一个用于加速下载国外资源的工具，通过将用户请�
 使用Docker部署
 
 ```
-sudo docker run -d -p 8000:8000 --env "DOMAIN=http://10.1.110.60:8000" mrlee326/urlproxy
+sudo docker run -d -p 8000:8000  mrlee326/urlproxy
 ```
-
-> 必须传入环境变量DOMAIN，DOMAIN是urlproxy对外正式的地址
