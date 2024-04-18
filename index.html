@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文件下载加速器</title>
+    <style>
+        body {
+            padding: 0px;
+            margin: 0px;
+            background-color: aliceblue;
+        }
+
+        .container {
+            text-align: center;
+            width: 80%;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+            background: white;
+            margin-top: 120px;
+            padding: 60px 20px 200px 20px;
+            box-shadow: 6px 4px 4px rgb(202, 202, 202);
+        }
+
+        .inner {
+            width: 90%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .title {
+            color: #303133;
+        }
+
+        .inputbox {
+            width: 100%;
+            display: flex;
+            margin-top: 30px;
+        }
+
+        .inputbox input {
+            flex: 1;
+            margin: 0px;
+            border: 2px solid #409eff;
+            border-right: 0px;
+            border-radius: 4px 0px 0px 4px;
+            padding: 0 15px;
+            cursor: pointer;
+            outline: none;
+            font-size: 16px;
+            line-height: 25px;
+            height: 46px;
+        }
+
+        .inputbox input:focus {
+            outline: none;
+            border-color: #63adf8;
+        }
+
+        .inputbox button {
+            width: 100px;
+            color: #fff;
+            background-color: #409eff;
+            border: 1px;
+
+            height: 50px;
+            border-radius: 0px 4px 4px 0px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .inputbox button:hover {
+            background-color: #63adf8;
+        }
+
+        .desc {
+            background-color: #f4f4f5;
+            color: #909399;
+            padding: 10px 20px;
+            margin-top: 30px;
+            border-radius: 4px;
+        }
+
+        #error {
+            padding: 8px 20px;
+            margin-top: 12px;
+            border-radius: 4px;
+            display: none;
+        }
+
+        #error a {
+            text-decoration: none;
+            color: #2c8500;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="inner">
+            <div class="title">
+                <h2>文件下载加速</h2>
+            </div>
+            <div class="inputbox">
+                <input type="text" id="url" placeholder="请输入要加速的文件地址">
+                <button id="button">Go</button>
+            </div>
+            <div id="error">
+
+            </div>
+            <div class="desc">
+                当您遇到一些国外资源因为网络原因无法下载时，可以使用本加速器下载
+            </div>
+        </div>
+
+    </div>
+    <script>
+        window.onload = () => {
+            const button = document.getElementById('button');
+            const urlinput = document.getElementById('url');
+            button.addEventListener('click', () => {
+                let url = urlinput.value
+                if (isValidUrl(url)) {
+                    hidemsg()
+                    let origin = document.location.origin
+                    let downloadurl = `${origin}/proxy/${url}`
+                    window.open(downloadurl)
+                    showsuccesss(downloadurl)
+                } else {
+                    showerror("输入的地址不合法")
+                }
+            })
+        }
+
+        function isValidUrl(url) {
+            var urlPattern = /^(https?:\/\/)?([\w-]+\.)+[\w-]+(:\d+)?(\/[\w-./?%&=]*)?$/;
+            return urlPattern.test(url);
+        }
+
+        function showerror(msg) {
+            let error = document.getElementById('error');
+            error.innerText = msg
+            error.style.backgroundColor = "#fef0f0"
+            error.style.color = "#f56c6c"
+            error.style.display = 'block'
+        }
+
+        function showsuccesss(downloadurl) {
+            let error = document.getElementById('error');
+            error.innerHTML = `您的下载应该已经开始，如果没有自动下载，请<a target="_blank" href="${downloadurl}">点击这里进行下载</a>`
+            error.style.backgroundColor = "#f0f9eb"
+            error.style.color = "#67c23a"
+            error.style.display = 'block'
+        }
+
+        function hidemsg() {
+            let error = document.getElementById('error');
+            error.innerText = ""
+            error.style.display = 'none'
+        }
+
+    </script>
+</body>
+
+</html>
