@@ -3,7 +3,7 @@ name: Docker Build CI
 on:
   push:
     branches:
-      - ''
+      - 'aff'
 
 jobs:
   docker:
@@ -30,4 +30,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: mrlee326/urlproxy
+          tags: mrlee326/urlproxy:aff

@@ -150,7 +150,7 @@
             flex-shrink: 0;
         }
 
-        .footer{
+        .footer {
             position: absolute;
             bottom: 0px;
             left: 0px;
@@ -162,9 +162,36 @@
             color: #606266;
         }
 
-        .footer a{
+        .footer a {
             color: #606266;
         }
+
+        .posts {
+            width: 80%;
+            max-width: 1060px;
+            margin-left: auto;
+            margin-right: auto;
+            padding-top: 20px;
+        }
+
+        .posts .post {
+            width: 33%;
+            height: 100px;
+            float: left;
+            margin-bottom: 20px;
+        }
+
+        @media screen and (max-width: 1000px) {
+            .posts .post {
+                width: 50%;
+            }
+        }
+        @media screen and (max-width: 600px) {
+            .posts .post {
+                width: 100%;
+            }
+        }
+
     </style>
 </head>
 
@@ -209,10 +236,15 @@
 
             </div>
         </div>
-
+    </div>
+    <div class="posts">
+        <div class="post" style="background: red;"></div>
+        <div class="post" style="background: blue;"></div>
+        <div class="post" style="background: yellow;"></div>
     </div>
     <div class="footer">
-        copyright 2024-<span id="toyear"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本页面由<a href="https://github.com/lixiaofei123/urlproxy" target="_blank">URLPROXY</a>驱动
+        copyright 2024-<span id="toyear"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本页面由<a
+            href="https://github.com/lixiaofei123/urlproxy" target="_blank">URLPROXY</a>驱动
     </div>
     <script>
         window.onload = async () => {
