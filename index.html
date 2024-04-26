@@ -149,6 +149,22 @@
             padding-left: 5px;
             flex-shrink: 0;
         }
+
+        .footer{
+            position: absolute;
+            bottom: 0px;
+            left: 0px;
+            right: 0px;
+            text-align: center;
+            padding-bottom: 20px;
+            font-size: 14px;
+            font-weight: 400;
+            color: #606266;
+        }
+
+        .footer a{
+            color: #606266;
+        }
     </style>
 </head>
 
@@ -195,8 +211,14 @@
         </div>
 
     </div>
+    <div class="footer">
+        copyright 2024-<span id="toyear"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本页面由<a href="https://github.com/lixiaofei123/urlproxy" target="_blank">URLPROXY</a>驱动
+    </div>
     <script>
         window.onload = async () => {
+
+            document.getElementById("toyear").innerText = new Date().getFullYear();
+
             const button = document.getElementById('button');
             const urlinput = document.getElementById('url');
             const lockbox = document.getElementById('lockbox');
