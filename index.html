@@ -230,7 +230,7 @@
                         if (loginresp.status === 200) {
                             let body = await loginresp.json()
                             let authentication = body.authentication
-                            setCookie("authentication", authentication)
+                            setCookie("authentication", authentication, 25)
                             lockbox.style.display = "none"
                         } else {
                             // 密码错误
