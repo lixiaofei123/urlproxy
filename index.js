@@ -18,7 +18,12 @@ app.get('/proxy/*', async (req, resp) => {
             throw new Error('url is not allowed')
         }
 
-        const proxyResp = await fetch(proxypath);
+        let headers = req.headers
+        headers["host"] = proxyhost
+
+        const proxyResp = await fetch(proxypath, {
+            headers: headers
+        });
         let proxyRespHeaders = proxyResp.headers;
         proxyRespHeaders.delete("content-security-policy");
         proxyRespHeaders.delete("content-security-policy-report-only");
