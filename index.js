@@ -28,6 +28,7 @@ app.get('/proxy/*', async (req, resp) => {
         proxyRespHeaders.delete("content-security-policy");
         proxyRespHeaders.delete("content-security-policy-report-only");
         proxyRespHeaders.delete("clear-site-data");
+        proxyRespHeaders.delete("content-encoding")
         proxyRespHeaders.set("access-control-expose-headers", "*");
         proxyRespHeaders.set("access-control-allow-origin", "*");
         proxyRespHeaders.set("content-disposition", "attachment");
