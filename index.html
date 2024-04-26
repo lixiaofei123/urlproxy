@@ -83,6 +83,17 @@
             padding: 10px 20px;
             margin-top: 30px;
             border-radius: 4px;
+            text-align: left;
+        }
+
+        .desc .code {
+            background: #161b22;
+            color: #e6edf3;
+            font-size: 12px;
+            padding: 6px 5px;
+            margin-top: 10px;
+            font-size: 85%;
+            line-height: 1.45;
         }
 
         #error {
@@ -103,7 +114,7 @@
             right: 0px;
             top: 0px;
             bottom: 0px;
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.95);
             display: none;
         }
 
@@ -150,7 +161,7 @@
             flex-shrink: 0;
         }
 
-        .footer{
+        .footer {
             position: absolute;
             bottom: 0px;
             left: 0px;
@@ -162,7 +173,7 @@
             color: #606266;
         }
 
-        .footer a{
+        .footer a {
             color: #606266;
         }
     </style>
@@ -182,7 +193,14 @@
 
             </div>
             <div class="desc">
-                当您遇到一些国外资源因为网络原因无法下载时，可以使用本加速器进行中转下载
+                当您遇到一些国外资源因为网络原因无法下载时，可以使用本加速器进行中转下载。
+                如果您使用wget工具或者curl命令下载，而且您又设置了密码情况下，您可以使用下面的命令<br>
+                <div class="code">
+                    <p>wget --auth-no-challenge <span class="schema"></span>//admin:{您的密码}@<span
+                            class="host"></span>/proxy/<span class="proxyurl">{文件链接}</span></p>
+                    <p>curl <span class="schema"></span>//admin:{您的密码}@<span class="host"></span>/proxy/<span
+                            class="proxyurl">{文件链接}</span></p>
+                </div>
             </div>
         </div>
 
@@ -212,7 +230,8 @@
 
     </div>
     <div class="footer">
-        copyright 2024-<span id="toyear"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本页面由<a href="https://github.com/lixiaofei123/urlproxy" target="_blank">URLPROXY</a>驱动
+        copyright 2024-<span id="toyear"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本页面由<a
+            href="https://github.com/lixiaofei123/urlproxy" target="_blank">URLPROXY</a>驱动
     </div>
     <script>
         window.onload = async () => {
@@ -223,11 +242,27 @@
             const urlinput = document.getElementById('url');
             const lockbox = document.getElementById('lockbox');
 
+            const origin = document.location.origin
+            const host = document.location.host
+            const protocol = document.location.protocol
+            const hostDoms = document.getElementsByClassName('host')
+            const schemaDoms = document.getElementsByClassName('schema')
+            const proxyurlDoms = document.getElementsByClassName('proxyurl')
+            for (let i = 0; i < hostDoms.length; i++) {
+                hostDoms[i].innerText = host
+            }
+            for (let i = 0; i < schemaDoms.length; i++) {
+                schemaDoms[i].innerText = protocol
+            }
+
             button.addEventListener('click', () => {
                 let url = urlinput.value
                 if (isValidUrl(url)) {
                     hidemsg()
-                    let origin = document.location.origin
+                    for (let i = 0; i < proxyurlDoms.length; i++) {
+                        proxyurlDoms[i].innerText = url
+                    }
+
                     let downloadurl = `${origin}/proxy/${url}`
                     window.open(downloadurl)
                     showsuccesss(downloadurl)
@@ -252,7 +287,7 @@
                         if (loginresp.status === 200) {
                             let body = await loginresp.json()
                             let authentication = body.authentication
-                            setCookie("authentication", authentication, 25)
+                            setCookie("Authentication", "Bearer " + authentication, 25)
                             lockbox.style.display = "none"
                         } else {
                             // 密码错误
