@@ -31,6 +31,13 @@ sudo docker run -d -p 3000:3000  mrlee326/urlproxy
 sudo docker run -d -p 3000:3000 --env "PASSWORD=123456" mrlee326/urlproxy 
 ```
 
+如果在设置了密码的情况下，使用curl或者wget下载的命令如下
+
+```bash
+wget --auth-no-challenge http://admin:{您的密码}@127.0.0.1:3000/proxy/{文件链接}
+curl http://admin:{您的密码}@127.0.0.1:3000/proxy/{文件链接}
+```
+
 
 设置只能代理www.baidu.com和www.google.com域名下的资源,可以使用如下命令
 
