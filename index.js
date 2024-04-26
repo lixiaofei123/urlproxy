@@ -1,23 +1,53 @@
 import express from 'express';
 import fetch from 'node-fetch';
 import path from 'path';
-
+import jwt from 'jsonwebtoken';
+import { v4 as uuidv4 } from 'uuid';
+import cookieParser from 'cookie-parser';
 
 const __dirname = path.resolve();
 const app = express();
+app.use(express.json()) 
+app.use(cookieParser());
 
-app.get('/proxy/*', async (req, resp) => {
+app.use("/*", (req, resp, next) => {
+    const baseUrl = req.baseUrl;
+    if(baseUrl !== "" && baseUrl !== "/" && baseUrl !== "/auth/login"){
+        if(PASSWORD !== ""){
+            const authentication = req.cookies["authentication"] || ""
+            jwt.verify(authentication,SIGN_KEY,(err, _decoded)=>{
+                if(err){
+                    resp.status(401).send(err.toString())
+                }else{
+                    next()
+                }
+            })
+            
+        }else{
+            next()
+        }
+    }else{
+        next()
+    }
     
-    const proxypath = req.url.substring(7); // Remove the leading '/'
+  })
+
+app.get("/proxy/*", async (req, resp) => {
+    
+    const proxypath = req.url.substring(7);
     try {
         const proxyurl = new URL(proxypath)
         const proxyhost = proxyurl.hostname
         const reqhost =  req.hostname
 
-        if(reqhost == "" || reqhost === proxyhost){
-            throw new Error('url is not allowed')
+        if(reqhost === "" || reqhost === proxyhost){
+            throw new Error("url is not allowed")
         }
 
+        if(ALLOWED_DOMAINS !== "" && ALLOWED_DOMAINS_MAP[proxyhost] === undefined){
+            throw new Error("domain is not allowed")
+        }
+        
         let headers = req.headers
         headers["host"] = proxyhost
 
@@ -37,18 +67,54 @@ app.get('/proxy/*', async (req, resp) => {
         }
         proxyResp.body.pipe(resp);
     } catch (error) {
-        resp.status(400)
-        resp.send(error.toString());
+        resp.status(400).send(error.toString());
     }
 })
 
 
 
-app.get('/', async (_req, resp) => {
-    resp.sendFile(path.resolve(__dirname,'index.html'));
+app.get("/", async (_req, resp) => {
+    resp.sendFile(path.resolve(__dirname,"index.html"));
+})
+
+app.post("/auth/check", async (req, resp) => {
+    resp.status(200).send("")
+})
+
+app.post("/auth/login", async(req, resp) => {
+    if(PASSWORD !== ""){
+        try{
+            const bodyjson = req.body;
+            const pwd = bodyjson["password"]
+            if(pwd === PASSWORD){
+                const authentication = jwt.sign({ foo: 'bar', iat: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30 }, SIGN_KEY);
+                resp.status(200).json({
+                    authentication: authentication
+                })
+            }else{
+                resp.status(401).send("密码错误")
+            }
+        }catch(err){
+            resp.status(400).send(err.toString())
+        }
+       
+    }else{
+        resp.status(200).json({})
+    }
 })
 
 const PORT = process.env.PORT || 3000;
+const PASSWORD = process.env.PASSWORD || "";
+const ALLOWED_DOMAINS = process.env.ALLOWED_DOMAINS || ""
+let ALLOWED_DOMAINS_MAP = {}
+if(ALLOWED_DOMAINS !== ""){
+    let domains = ALLOWED_DOMAINS.split(",")
+    for(let i = 0; i < domains.length; i++){
+        ALLOWED_DOMAINS_MAP[domains[i]] = ""
+    }    
+}
+const SIGN_KEY = uuidv4();
+
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
