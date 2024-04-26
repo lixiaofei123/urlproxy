@@ -9,6 +9,7 @@ RUN npm install
 
 COPY index.js index.js
 COPY index.html index.html
+COPY images images
 
 EXPOSE 3000
 
