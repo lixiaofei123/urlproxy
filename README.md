@@ -15,7 +15,7 @@ URLProxy 是一个用于加速下载国外资源的工具，通过将用户请�
 
 ## 部署
 
-> 如果您想支持本作者，可以将下面命令中的的mrlee326/urlproxy替换为mrlee326/urlproxy:aff，这只会让首页上出现几个广告，并不影响您的使用
+> 如果您想支持本作者，可以将下面命令中的的mrlee326/urlproxy替换为mrlee326/urlproxy:aff，这只会让首页上出现几个漂亮的广告，并不影响您的使用
 
 使用Docker部署
 
