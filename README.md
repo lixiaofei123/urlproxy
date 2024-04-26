@@ -14,3 +14,7 @@ URLProxy 是一个用于加速下载国外资源的工具，通过将用户请�
 ```
 sudo docker run -d -p 3000:3000  mrlee326/urlproxy
 ```
+
+启动后可以看到一个页面，输入想要下载的url，点击【GO】按钮即可下载。
+
+![首页](index.png)
