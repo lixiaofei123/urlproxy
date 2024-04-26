@@ -12,7 +12,7 @@ app.use(cookieParser());
 
 app.use("/*", (req, resp, next) => {
     const baseUrl = req.baseUrl;
-    if(baseUrl !== "" && baseUrl !== "/" && baseUrl !== "/auth/login"){
+    if(baseUrl !== "" && baseUrl !== "/" && baseUrl !== "/auth/login" && baseUrl.indexOf("/images/") !== 0){
         if(PASSWORD !== ""){
             const authentication = req.cookies["authentication"] || ""
             jwt.verify(authentication,SIGN_KEY,(err, _decoded)=>{
@@ -75,6 +75,12 @@ app.get("/proxy/*", async (req, resp) => {
 
 app.get("/", async (_req, resp) => {
     resp.sendFile(path.resolve(__dirname,"index.html"));
+})
+
+app.get("/images/*", async (req, resp) => {
+    const filename = req.params[0];
+    const filepath = path.resolve(__dirname, "images", filename);
+    resp.sendFile(filepath);
 })
 
 app.post("/auth/check", async (req, resp) => {

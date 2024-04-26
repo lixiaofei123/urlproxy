@@ -179,6 +179,7 @@
             height: 100px;
             float: left;
             margin-bottom: 20px;
+            text-align: center;
         }
 
         @media screen and (max-width: 1000px) {
@@ -190,6 +191,10 @@
             .posts .post {
                 width: 100%;
             }
+        }
+
+        .posts .post img{
+            width: calc(100% - 20px);
         }
 
     </style>
@@ -238,9 +243,21 @@
         </div>
     </div>
     <div class="posts">
-        <div class="post" style="background: red;"></div>
-        <div class="post" style="background: blue;"></div>
-        <div class="post" style="background: yellow;"></div>
+        <div class="post">
+            <a href="https://curl.qcloud.com/sPZ9SNxh" target="_blank">
+                <img src="/images/qcloud.png" />
+            </a>
+        </div>
+        <div class="post">
+            <a href="https://www.aliyun.com/activity?userCode=dwncyka0" target="_blank">
+                <img src="/images/aliyun.png" />
+            </a>
+        </div>
+        <div class="post">
+            <a href="https://bandwagonhost.com/aff.php?aff=74689" target="_blank">
+                <img src="/images/bwh.png" />
+            </a>
+        </div>
     </div>
     <div class="footer">
         copyright 2024-<span id="toyear"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本页面由<a
