@@ -312,7 +312,7 @@
                     }
 
                     let downloadurl = `${origin}/proxy/${url}`
-                    window.open(downloadurl)
+                    downloadUrl(downloadurl)
                     showsuccesss(downloadurl)
                 } else {
                     showerror("输入的地址不合法")
@@ -344,6 +344,13 @@
                     }
                 });
             }
+        }
+
+        function downloadUrl(url){
+            let atag = document.createElement("a")
+            atag.href = url
+            atag.target = "_blank"
+            atag.click()
         }
 
         function isValidUrl(url) {
