@@ -1,5 +1,5 @@
 # Use Node.js base image
-FROM node:latest
+FROM node:20-bullseye-slim
 
 WORKDIR /app
 

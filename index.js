@@ -75,20 +75,39 @@ app.get("/proxy/*", async (req, resp) => {
         headers["host"] = proxyhost
 
         const proxyResp = await fetch(proxypath, {
-            headers: headers
+            headers: headers,
+            redirect: "manual"
         });
-        let proxyRespHeaders = proxyResp.headers;
-        proxyRespHeaders.delete("content-security-policy");
-        proxyRespHeaders.delete("content-security-policy-report-only");
-        proxyRespHeaders.delete("clear-site-data");
-        proxyRespHeaders.delete("content-encoding")
-        proxyRespHeaders.set("access-control-expose-headers", "*");
-        proxyRespHeaders.set("access-control-allow-origin", "*");
-        proxyRespHeaders.set("content-disposition", "attachment");
-        for (const [key, value] of proxyRespHeaders.entries()) {
-            resp.set(key, value);
-        }
-        proxyResp.body.pipe(resp);
+
+        if(proxyResp.status === 200){
+
+            let proxyRespHeaders = proxyResp.headers;
+            proxyRespHeaders.delete("content-security-policy");
+            proxyRespHeaders.delete("content-security-policy-report-only");
+            proxyRespHeaders.delete("clear-site-data");
+            proxyRespHeaders.delete("content-encoding")
+            proxyRespHeaders.set("access-control-expose-headers", "*");
+            proxyRespHeaders.set("access-control-allow-origin", "*");
+            if(!proxyRespHeaders.has("content-disposition")){
+                proxyRespHeaders.set("content-disposition", "attachment");
+            }
+            
+            for (const [key, value] of proxyRespHeaders.entries()) {
+                resp.set(key, value);
+            }
+            proxyResp.body.pipe(resp);
+
+        }else if(proxyResp.status === 301 || proxyResp.status === 302){
+            let proxyRespHeaders = proxyResp.headers;
+            const location = proxyRespHeaders.get("location")
+            resp.set("Location", "/proxy/" + location)
+            resp.status(proxyResp.status).send("")
+
+        }else{
+            proxyResp.body.pipe(resp);
+        }   
+
+       
     } catch (error) {
         resp.status(400).send(error.toString());
     }
