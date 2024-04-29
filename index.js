@@ -74,6 +74,7 @@ app.get("/proxy/*", async (req, resp) => {
         
         let headers = req.headers
         headers["host"] = proxyhost
+        headers["accept-encoding"] = undefined
 
         const proxyResp = await fetch(proxypath, {
             headers: headers,
