@@ -8,6 +8,7 @@ COPY package*.json ./
 RUN npm install
 
 COPY index.js index.js
+COPY domain-validator.js domain-validator.js
 COPY index.html index.html
 
 EXPOSE 3000
