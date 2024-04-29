@@ -4,6 +4,7 @@ import path from 'path';
 import jwt from 'jsonwebtoken';
 import { v4 as uuidv4 } from 'uuid';
 import cookieParser from 'cookie-parser';
+import DomainValidator from './domain-validator.js';
 
 const __dirname = path.resolve();
 const app = express();
@@ -67,7 +68,7 @@ app.get("/proxy/*", async (req, resp) => {
             throw new Error("url is not allowed")
         }
 
-        if(ALLOWED_DOMAINS !== "" && ALLOWED_DOMAINS_MAP[proxyhost] === undefined){
+        if(ALLOWED_DOMAINS !== "" && !DOMAIN_VALIDATOR.match(proxyhost)){
             throw new Error("domain is not allowed")
         }
         
@@ -89,7 +90,9 @@ app.get("/proxy/*", async (req, resp) => {
             proxyRespHeaders.set("access-control-expose-headers", "*");
             proxyRespHeaders.set("access-control-allow-origin", "*");
             if(!proxyRespHeaders.has("content-disposition")){
-                proxyRespHeaders.set("content-disposition", "attachment");
+                if(FORCE_DOWNLOAD !== "false"){
+                    proxyRespHeaders.set("content-disposition", "attachment");
+                }
             }
             
             for (const [key, value] of proxyRespHeaders.entries()) {
@@ -148,12 +151,11 @@ app.post("/auth/login", async(req, resp) => {
 const PORT = process.env.PORT || 3000;
 const PASSWORD = process.env.PASSWORD || "";
 const ALLOWED_DOMAINS = process.env.ALLOWED_DOMAINS || ""
-let ALLOWED_DOMAINS_MAP = {}
+const FORCE_DOWNLOAD = process.env.FORCE_DOWNLOAD.toLowerCase() || ""
+let DOMAIN_VALIDATOR = undefined
 if(ALLOWED_DOMAINS !== ""){
     let domains = ALLOWED_DOMAINS.split(",")
-    for(let i = 0; i < domains.length; i++){
-        ALLOWED_DOMAINS_MAP[domains[i]] = ""
-    }    
+    DOMAIN_VALIDATOR = new DomainValidator(domains)  
 }
 const SIGN_KEY = uuidv4();
 

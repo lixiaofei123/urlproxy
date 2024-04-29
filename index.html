@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>文件下载加速器</title>
+    <title>URLPROXY</title>
     <style>
         body {
             padding: 0px;
@@ -84,18 +84,12 @@
             margin-top: 30px;
             border-radius: 4px;
             text-align: left;
+            line-height: 25px;
         }
 
-        .desc .code {
-            background: #161b22;
-            color: #e6edf3;
-            font-size: 12px;
-            padding: 6px 5px;
-            margin-top: 10px;
-            font-size: 85%;
-            line-height: 1.45;
+        .desc a{
+            color: #75777b;
         }
-
         #error {
             padding: 8px 20px;
             margin-top: 12px;
@@ -183,24 +177,18 @@
     <div class="container">
         <div class="inner">
             <div class="title">
-                <h2>文件下载加速</h2>
+                <h2>URL代理访问</h2>
             </div>
             <div class="inputbox">
-                <input type="text" id="url" placeholder="请输入要加速的文件链接">
+                <input type="text" id="url" placeholder="请输入要获取的文件链接">
                 <button id="button">Go</button>
             </div>
             <div id="error">
 
             </div>
             <div class="desc">
-                当您遇到一些国外资源因为网络原因无法下载时，可以使用本加速器进行中转下载。
-                如果您使用wget工具或者curl命令下载，而且您又设置了密码情况下，您可以使用下面的命令<br>
-                <div class="code">
-                    <p>wget --auth-no-challenge <span class="schema"></span>//admin:{您的密码}@<span
-                            class="host"></span>/proxy/<span class="proxyurl">{文件链接}</span></p>
-                    <p>curl <span class="schema"></span>//admin:{您的密码}@<span class="host"></span>/proxy/<span
-                            class="proxyurl">{文件链接}</span></p>
-                </div>
+                当您遇到一些国外资源因为网络原因无法获取时，可以使用本加速器进行中转获取。
+                如果您使用wget工具或者curl命令下载，而且您又设置了密码情况下，可以<a target="_blank" href="https://github.com/lixiaofei123/urlproxy#notice">参考这个说明</a>使用
             </div>
         </div>
 
@@ -242,27 +230,11 @@
             const urlinput = document.getElementById('url');
             const lockbox = document.getElementById('lockbox');
 
-            const origin = document.location.origin
-            const host = document.location.host
-            const protocol = document.location.protocol
-            const hostDoms = document.getElementsByClassName('host')
-            const schemaDoms = document.getElementsByClassName('schema')
-            const proxyurlDoms = document.getElementsByClassName('proxyurl')
-            for (let i = 0; i < hostDoms.length; i++) {
-                hostDoms[i].innerText = host
-            }
-            for (let i = 0; i < schemaDoms.length; i++) {
-                schemaDoms[i].innerText = protocol
-            }
-
+            const origin = document.location.origin            
             button.addEventListener('click', () => {
                 let url = urlinput.value
                 if (isValidUrl(url)) {
                     hidemsg()
-                    for (let i = 0; i < proxyurlDoms.length; i++) {
-                        proxyurlDoms[i].innerText = url
-                    }
-
                     let downloadurl = `${origin}/proxy/${url}`
                     downloadUrl(downloadurl)
                     showsuccesss(downloadurl)
