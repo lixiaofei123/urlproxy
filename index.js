@@ -152,7 +152,7 @@ app.post("/auth/login", async(req, resp) => {
 const PORT = process.env.PORT || 3000;
 const PASSWORD = process.env.PASSWORD || "";
 const ALLOWED_DOMAINS = process.env.ALLOWED_DOMAINS || ""
-const FORCE_DOWNLOAD = process.env.FORCE_DOWNLOAD.toLowerCase() || ""
+const FORCE_DOWNLOAD = (process.env.FORCE_DOWNLOAD || "").toLowerCase()
 let DOMAIN_VALIDATOR = undefined
 if(ALLOWED_DOMAINS !== ""){
     let domains = ALLOWED_DOMAINS.split(",")
