@@ -4,6 +4,8 @@ URLProxy 是一个用于加速下载国外资源的工具，通过将用户请�
 
 原理是将URLProxy部署在一个对境外境内网络都比较好的服务器上，通过这个服务器进行中转下载。类似于nginx的反向代理，但是代理的地址可以通过url传入
 
+此为Docker版本，如果需要Cloudflare Worker版本，请[点击这里](https://github.com/lixiaofei123/urlproxy/tree/cfworker)
+
 ## 功能特点
 
 - 加速国外资源下载：通过 URLProxy，用户可以快速下载国外资源，避免因为网络问题导致的下载缓慢。
