@@ -63,8 +63,8 @@ ALLOWED_DOMAINS = "*"
 
 启动后可以看到一个页面，输入想要下载的url，点击【GO】按钮即可下载。
 
-![首页](index.png)
+![首页]([index.png](https://raw.githubusercontent.com/lixiaofei123/urlproxy/master/index.png))
 
 如果设置了密码，看到的应该是下面需要输入密码的页面，在输入正确的密码，按下回车后，就可以正常使用
 
-![输入密码](lock.png)
+![输入密码](https://raw.githubusercontent.com/lixiaofei123/urlproxy/master/lock.png)

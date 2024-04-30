@@ -109,6 +109,6 @@ compatibility_flags = ["nodejs_compat"]
 
 
 [vars]
-PASSWORD = 123456
+PASSWORD = ""
 FORCE_DOWNLOAD = "false"
 ALLOWED_DOMAINS = "*"
