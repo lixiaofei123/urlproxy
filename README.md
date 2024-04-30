@@ -29,34 +29,6 @@ sudo docker run -d -p 3000:3000  mrlee326/urlproxy
 2. 如果需要设置代理域名白名单，请指定环境变量ALLOWED_DOMAINS，多个域名请用,隔开，支持*匹配
 3. 要控制 URLProxy 对代理 URL 的下载行为，请在环境变量中指定 FORCE_DOWNLOAD。默认情况下，FORCE_DOWNLOAD 设置为 true，URLProxy 会强制将代理的 URL 内容作为下载文件返回给用户。但是，如果您希望代理的 URL 按照原始 URL 的内容类型行为，即在浏览器中打开网页或显示其他内容，可以将 FORCE_DOWNLOAD 设置为 false。例如，如果代理的内容是一张图片，不设置FORCE_DOWNLOAD的情况下，浏览器将会下载这张图片到本地。如果设置FORCE_DOWNLOAD为false,浏览器将直接显示这张图片
 
-设置访问密码为123456,可以使用如下命令
-
-```bash
-sudo docker run -d -p 3000:3000 --env "PASSWORD=123456" mrlee326/urlproxy 
-```
-
-<div id="notice">说明</div>
-
-如果在设置了密码的情况下，使用curl或者wget下载的命令如下
-
-```bash
-wget --auth-no-challenge http://admin:{您的密码}@127.0.0.1:3000/proxy/{文件链接}
-curl http://admin:{您的密码}@127.0.0.1:3000/proxy/{文件链接}
-```
-
-
-设置只能代理www.baidu.com和*.google.com域名下的资源,可以使用如下命令
-
-```bash
-sudo docker run -d -p 3000:3000 --env "ALLOWED_DOMAINS=www.baidu.com,*.google.com" mrlee326/urlproxy 
-```
-
-改变默认的强制下载的行为
-
-```bash
-sudo docker run -d -p 3000:3000 --env "FORCE_DOWNLOAD=false" mrlee326/urlproxy 
-```
-
 
 启动后可以看到一个页面，输入想要下载的url，点击【GO】按钮即可下载。
 
