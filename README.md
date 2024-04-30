@@ -6,7 +6,7 @@ URLProxy 是一个用于加速下载国外资源的工具，通过将用户请�
 
 此为Docker版本，如果需要Cloudflare Worker版本，请[点击这里](https://github.com/lixiaofei123/urlproxy/tree/cfworker)
 
-部署完毕后，可以通过下面的地址访问要代理的资源
+部署完毕后，可以通过下面的地址访问要代理的资源，也可以直接在自带的页面上操作下载
 
 ```bash
 http://{域名}/proxy/{文件HTTTP链接}
