@@ -56,6 +56,60 @@ app.use("/*", (req, resp, next) => {
     
   })
 
+
+async function proxyResquest(proxypath,req,resp){
+
+    try {
+
+        const proxyurl = new URL(proxypath)
+        const proxyhost = proxyurl.hostname
+        
+        let headers = new Headers(req.headers)
+
+        headers.set("host", proxyhost)
+        headers.delete("accept-encoding")
+
+        const proxyResp = await fetch(proxypath, {
+            headers: headers,
+            redirect: "manual"
+        });
+
+        if(proxyResp.status === 200){
+
+            let proxyRespHeaders = new Headers(proxyResp.headers);
+            proxyRespHeaders.delete("content-security-policy");
+            proxyRespHeaders.delete("content-security-policy-report-only");
+            proxyRespHeaders.delete("clear-site-data");
+            proxyRespHeaders.delete("content-encoding")
+            proxyRespHeaders.set("access-control-expose-headers", "*");
+            proxyRespHeaders.set("access-control-allow-origin", "*");
+            if(!proxyRespHeaders.has("content-disposition")){
+                if(FORCE_DOWNLOAD !== "false"){
+                    proxyRespHeaders.set("content-disposition", "attachment");
+                }
+            }
+            
+            for (const [key, value] of proxyRespHeaders.entries()) {
+                resp.set(key, value);
+            }
+            
+            proxyResp.body.pipe(resp);
+
+        }else if(proxyResp.status === 301 || proxyResp.status === 302){
+            let proxyRespHeaders = proxyResp.headers;
+            const location = proxyRespHeaders.get("location")
+            proxyResquest(location,req,resp)
+
+        }else{
+            proxyResp.body.pipe(resp);
+        }   
+
+       
+    } catch (error) {
+        resp.status(400).send(error.toString());
+    }
+}
+
 app.get("/proxy/*", async (req, resp) => {
     
     const proxypath = req.url.substring(7);
@@ -72,44 +126,7 @@ app.get("/proxy/*", async (req, resp) => {
             throw new Error("domain is not allowed")
         }
         
-        let headers = req.headers
-        headers["host"] = proxyhost
-        headers["accept-encoding"] = undefined
-
-        const proxyResp = await fetch(proxypath, {
-            headers: headers,
-            redirect: "manual"
-        });
-
-        if(proxyResp.status === 200){
-
-            let proxyRespHeaders = proxyResp.headers;
-            proxyRespHeaders.delete("content-security-policy");
-            proxyRespHeaders.delete("content-security-policy-report-only");
-            proxyRespHeaders.delete("clear-site-data");
-            proxyRespHeaders.delete("content-encoding")
-            proxyRespHeaders.set("access-control-expose-headers", "*");
-            proxyRespHeaders.set("access-control-allow-origin", "*");
-            if(!proxyRespHeaders.has("content-disposition")){
-                if(FORCE_DOWNLOAD !== "false"){
-                    proxyRespHeaders.set("content-disposition", "attachment");
-                }
-            }
-            
-            for (const [key, value] of proxyRespHeaders.entries()) {
-                resp.set(key, value);
-            }
-            proxyResp.body.pipe(resp);
-
-        }else if(proxyResp.status === 301 || proxyResp.status === 302){
-            let proxyRespHeaders = proxyResp.headers;
-            const location = proxyRespHeaders.get("location")
-            resp.set("Location", "/proxy/" + location)
-            resp.status(proxyResp.status).send("")
-
-        }else{
-            proxyResp.body.pipe(resp);
-        }   
+        proxyResquest(proxypath, req, resp)
 
        
     } catch (error) {
