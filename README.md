@@ -4,7 +4,7 @@ URLProxy 是一个用于加速下载国外资源的工具，通过将用户请�
 
 原理是将URLProxy部署在一个对境外境内网络都比较好的服务器上，通过这个服务器进行中转下载。类似于nginx的反向代理，但是代理的地址可以通过url传入
 
-可以[点击这里](https://urlproxy.lixiaofei123.workers.dev)查看示例部署，密码是123456
+可以[点击这里](https://urlproxy.lixiaofei123.workers.dev)查看示例部署，密码是123456 (用的Cfworkers的默认域名,需要科学上网)
 
 ## 功能特点
 
