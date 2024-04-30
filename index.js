@@ -133,7 +133,7 @@ app.post("/auth/login", async(req, resp) => {
             const bodyjson = req.body;
             const pwd = bodyjson["password"]
             if(pwd === PASSWORD){
-                const authentication = jwt.sign({ foo: 'bar', iat: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30 }, SIGN_KEY);
+                const authentication = jwt.sign({ foo: 'bar', exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30 }, SIGN_KEY);
                 resp.status(200).json({
                     authentication: authentication
                 })
