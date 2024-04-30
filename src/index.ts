@@ -14,7 +14,6 @@
 
 import index from "./index.html";
 import { parse } from "cookie";
-const SIGN_KEY = "XXXXXXyyyy";
 import jwt from '@tsndr/cloudflare-worker-jwt'
 import { Buffer } from "node:buffer";
 
@@ -22,6 +21,7 @@ export interface Env {
 	FORCE_DOWNLOAD: string;
 	PASSWORD: string;
 	ALLOWED_DOMAINS: string;
+	SIGN_KEY: string
 }
 
 function checkDomain(allowDomains: string, domain: string) {
@@ -36,7 +36,7 @@ function checkDomain(allowDomains: string, domain: string) {
 	}
 }
 
-async function checkAuth(req: Request, password: string) {
+async function checkAuth(req: Request, signKey: string, password: string) {
 	const cookie = parse(req.headers.get("Cookie") || "");
 	const authentication = cookie["Authentication"] || req.headers.get("authorization") || ""
 	if (authentication !== "") {
@@ -47,7 +47,7 @@ async function checkAuth(req: Request, password: string) {
 			return (userpass.length === 2 && userpass[1] === password)
 		} else if (authentication.indexOf("Bearer") === 0) {
 			let jwttoken = authentication.substring(7)
-			return await jwt.verify(jwttoken, SIGN_KEY)
+			return await jwt.verify(jwttoken, signKey)
 		}
 	}
 	return false
@@ -99,11 +99,13 @@ async function proxyRequest(proxyurl: string, req: Request, forceDownload: boole
 
 export default {
 	async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
-
 		const url = new URL(request.url)
+		const PASSWORD = (env.PASSWORD || "") + ""
+		const SIGN_KEY = (env.SIGN_KEY || "abcdefg") + ""
+
 		if (url.pathname.indexOf("/proxy/") === 0) {
-			const PASSWORD = (env.PASSWORD || "") + ""
-			if (PASSWORD === "" || await checkAuth(request, PASSWORD)) {
+			
+			if (PASSWORD === "" || await checkAuth(request, SIGN_KEY, PASSWORD)) {
 				const ALLOWED_DOMAINS = env.ALLOWED_DOMAINS || ""
 				const proxyurl = request.url.substring(request.url.indexOf("/proxy/") + 7)
 
@@ -150,7 +152,7 @@ export default {
 
 		if (url.pathname === "/auth/check") {
 			const PASSWORD = (env.PASSWORD || "") + ""
-			if (PASSWORD === "" || await checkAuth(request, PASSWORD)) {
+			if (PASSWORD === "" || await checkAuth(request, SIGN_KEY, PASSWORD)) {
 				return new Response("", { status: 200 })
 			} else {
 				return new Response("Authorization failed", { status: 401 })
