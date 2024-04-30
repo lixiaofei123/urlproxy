@@ -64,13 +64,17 @@ FORCE_DOWNLOAD = "false"
 ALLOWED_DOMAINS = "*"
  ```
 
- 第五步, 部署到cf workers
+第五步, 部署到cf workers
 
  ```
  npm run deploy
  ```
 
  第一次运行此命令的时候，会打开一个网页进行授权，如果网页不能自动打开，可以手动复制网页地址到浏览器打开。授权完毕后，控制台会出现"Successfully logged in."，此时可以ctrl+C关闭此命令，再次执行 npm run deploy命令,成功以后，控制台上会输出对应的地址，打开此地址即可
+
+第六步(可选), 绑定域名
+
+Cloudflare Workers默认提供的域名在大陆可能无法使用，如果无法打开上面的地址，可以到Cloudflare后台Workers管理页面绑定自己的域名
 
 
 启动后可以看到一个页面，输入想要下载的url，点击【GO】按钮即可下载。
