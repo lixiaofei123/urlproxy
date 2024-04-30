@@ -2,13 +2,13 @@
 
 URLProxy 是一个用于加速下载国外资源的工具，通过将用户请求的资源代理到一个网络较好的服务器上，实现下载速度的提升。
 
-原理是将URLProxy部署在一个对境外境内网络都比较好的服务器上，通过这个服务器进行中转下载。类似于nginx的反向代理，但是代理的地址可以通过url传入
+原理是将URLProxy部署在[Cloudflare Workers](https://github.com/lixiaofei123/urlproxy/tree/cfworker)上，然后通过URLProxy下载。类似于nginx的反向代理，但是代理的地址可以通过url传入
 
 可以[点击这里](https://urlproxy.lixiaofei123.workers.dev)查看示例部署，密码是123456 (用的Cfworkers的默认域名,需要科学上网)
 
 ## 功能特点
 
-- 加速国外资源下载：通过 URLProxy，用户可以快速下载国外资源，避免因为网络问题导致的下载缓慢。
+- 加速国外资源下载：通过 URLProxy，用户可以快速下载国外资源，避免因为网络问题导致的下载缓慢(具体下载速度取决于Cloudflare的网络情况)。
 - 简单易用：用户只需在页面上输入想要下载的地址，点击下载即可完成下载过程，无需复杂的操作。
 
 ## 支持设置密码以及代理域名白名单
@@ -59,6 +59,7 @@ curl http://admin:{您的密码}@127.0.0.1:3000/proxy/{文件链接}
  ```
  [vars]
 PASSWORD = 123456
+SIGN_KEY = "abcdefg"
 FORCE_DOWNLOAD = "false"
 ALLOWED_DOMAINS = "*"
  ```
@@ -69,7 +70,7 @@ ALLOWED_DOMAINS = "*"
  npm run deploy
  ```
 
- 第一次运行的时候，会打开一个网页进行授权，如果网页不能自动打开，可以手动复制网页地址到浏览器打开。授权完毕后，控制台会出现"Successfully logged in."，此时可以ctrl+C关闭此命令，再次执行 npm run deploy命令,成功以后，控制台上会输出对应的地址，打开此地址即可
+ 第一次运行此命令的时候，会打开一个网页进行授权，如果网页不能自动打开，可以手动复制网页地址到浏览器打开。授权完毕后，控制台会出现"Successfully logged in."，此时可以ctrl+C关闭此命令，再次执行 npm run deploy命令,成功以后，控制台上会输出对应的地址，打开此地址即可
 
 
 启动后可以看到一个页面，输入想要下载的url，点击【GO】按钮即可下载。
