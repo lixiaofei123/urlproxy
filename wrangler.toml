@@ -111,5 +111,5 @@ compatibility_flags = ["nodejs_compat"]
 [vars]
 PASSWORD = "123456"
 FORCE_DOWNLOAD = "false"
-ALLOWED_DOMAINS = "*"
+ALLOWED_DOMAINS = "google.com,*.google.com"
 SIGN_KEY = "urlproxy"
