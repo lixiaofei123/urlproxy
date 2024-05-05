@@ -4,7 +4,7 @@ URLProxy 是一个用于加速下载国外资源的工具，通过将用户请�
 
 原理是将URLProxy部署在[Cloudflare Workers](https://github.com/lixiaofei123/urlproxy/tree/cfworker)上，然后通过URLProxy下载。类似于nginx的反向代理，但是代理的地址可以通过url传入
 
-可以[点击这里](http://dl.108429.xyz/)查看示例部署，密码是123456
+可以[点击这里](http://dl.108429.xyz/)查看示例部署
 
 部署完毕后，可以通过下面的地址访问要代理的资源，也可以直接在自带的页面上操作下载
 
