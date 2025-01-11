@@ -38,12 +38,18 @@ sudo docker run -d -p 3000:3000  mrlee326/urlproxy
 2. 如果需要设置代理域名白名单，请指定环境变量ALLOWED_DOMAINS，多个域名请用,隔开，支持*匹配
 3. 要控制 URLProxy 对代理 URL 的下载行为，请在环境变量中指定 FORCE_DOWNLOAD。默认情况下，FORCE_DOWNLOAD 设置为 true，URLProxy 会强制将代理的 URL 内容作为下载文件返回给用户。但是，如果您希望代理的 URL 按照原始 URL 的内容类型行为，即在浏览器中打开网页或显示其他内容，可以将 FORCE_DOWNLOAD 设置为 false。例如，如果代理的内容是一张图片，不设置FORCE_DOWNLOAD的情况下，浏览器将会下载这张图片到本地。如果设置FORCE_DOWNLOAD为false,浏览器将直接显示这张图片
 4. 如果需要允许跨域，请指定环境变量 ALLOW_CORS
-5. 如果需要制定cors origins，请指定 ALLOWED_CORS_DOMAINS
+5. 如果需要指定cors origins，请指定 ALLOWED_CORS_DOMAINS，不指定的话，默认为 *
 
 设置访问密码为123456,可以使用如下命令
 
 ```bash
 sudo docker run -d -p 3000:3000 --env "PASSWORD=123456" mrlee326/urlproxy 
+```
+
+设置允许跨域
+
+```bash
+sudo docker run -d -p 3000:3000 --env "ALLOW_CORS=true" mrlee326/urlproxy
 ```
 
 <div id="notice">说明</div>
