@@ -49,7 +49,7 @@ sudo docker run -d -p 3000:3000 --env "PASSWORD=123456" mrlee326/urlproxy
 设置允许跨域
 
 ```bash
-sudo docker run -d -p 3000:3000 --env "ALLOW_CORS=true" mrlee326/urlproxy
+sudo docker run -d -p 3000:3000 --env "ALLOW_CORS=true" --env "FORCE_DOWNLOAD=false" mrlee326/urlproxy
 ```
 
 <div id="notice">说明</div>
