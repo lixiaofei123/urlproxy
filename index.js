@@ -6,10 +6,29 @@ import { v4 as uuidv4 } from 'uuid';
 import cookieParser from 'cookie-parser';
 import DomainValidator from './domain-validator.js';
 
+import cors from 'cors';
+
 const __dirname = path.resolve();
 const app = express();
 app.use(express.json()) 
 app.use(cookieParser());
+
+const ALLOW_CORS = (process.env.ALLOW_CORS || "false").toLowerCase();
+const ALLOWED_CORS_DOMAINS = process.env.ALLOWED_CORS_DOMAINS || "*";
+
+if(ALLOW_CORS === "true"){
+    console.log(`设置了允许跨域，域名为${ALLOWED_CORS_DOMAINS}`)
+    const corsOptions = {
+        origin: ALLOWED_CORS_DOMAINS,
+        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+        headers: '*',
+        credentials: true,
+        optionsSuccessStatus: 204
+      };
+    
+    app.use(cors(corsOptions));
+}
+
 
 app.use("/*", (req, resp, next) => {
     const baseUrl = req.baseUrl;
